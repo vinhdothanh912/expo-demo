@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.do_thanh_vinh.ExpoDemo"
     },
     "web": {
       "bundler": "metro",

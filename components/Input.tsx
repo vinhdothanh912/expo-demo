@@ -8,8 +8,8 @@ export default function Input({ icon, ...props }: InputProps) {
   return (
     <View style={styles.inputContainer}>
       <TextInput
-        style={styles.input}
         placeholderTextColor={"#8a8d91"}
+        style={[styles.input, props.style]}
         {...props}
       />
       {icon ? icon : null}
@@ -18,9 +18,7 @@ export default function Input({ icon, ...props }: InputProps) {
 }
 
 const styles = StyleSheet.create({
-  inputContainer: {
-    marginBottom: 12,
-  },
+  inputContainer: {},
   input: {
     height: 42,
     borderRadius: 8,
@@ -30,5 +28,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: -1, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
+    marginBottom: 12,
   },
 });

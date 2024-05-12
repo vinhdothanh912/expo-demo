@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import Image from "@/components/Image";
 
-export default function RegisterScreen() {
+export default function ForgotScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
@@ -9,7 +9,7 @@ export default function RegisterScreen() {
         <Text style={styles.title}>Social Commercial</Text>
       </View>
       <View style={{ marginBottom: 12 }}>
-        <Text style={{ textAlign: "center" }}>Register Screen</Text>
+        <Text style={{ textAlign: "center" }}>Forgot Screen</Text>
       </View>
     </View>
   );

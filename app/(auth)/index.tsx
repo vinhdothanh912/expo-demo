@@ -1,26 +1,72 @@
+import Image from "@/components/Image";
 import Input from "@/components/Input";
+import { getData, storeData } from "@/utils/storage";
 import { Ionicons } from "@expo/vector-icons";
-import { useTheme } from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 
-export default function Login() {
+export default function LoginScreen() {
+  const router = useRouter();
   const [show, setShow] = useState(false);
-  const theme = useTheme();
+  const [userInfo, setUserInfo] = useState({ user: "", password: "" });
 
   const handleToggleShow = () => setShow((prev) => !prev);
+
+  const handleChangeUserInfo = (value: string, type: "user" | "password") => {
+    setUserInfo((prev) => ({ ...prev, [type]: value }));
+  };
+
+  const validateUserInfo = () => {
+    if (!userInfo.user || !userInfo.password) {
+      Alert.alert("Login failed!", "Please enter user name and password");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleNavigate = (name: string) => {
+    router.push(name);
+  };
+
+  const handleLogin = async () => {
+    const verified = validateUserInfo();
+    if (verified) {
+      storeData("user", userInfo.user);
+      storeData("password", userInfo.password);
+      router.replace("/home");
+    }
+  };
+
+  const getUserData = async () => {
+    const user = await getData("user");
+    const password = await getData("password");
+
+    if (!!user && !!password) {
+      router.replace("/home");
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
+        <Image source={require("@/assets/icon.png")} style={styles.logo} />
         <Text style={styles.title}>Social Commercial</Text>
       </View>
       <View style={{ marginBottom: 12 }}>
-        <Input placeholder="Mobile number or email" />
+        <Input
+          placeholder="User name"
+          onChangeText={(text) => handleChangeUserInfo(text, "user")}
+        />
         <Input
           placeholder="Password"
           secureTextEntry={!show}
+          onChangeText={(text) => handleChangeUserInfo(text, "password")}
           icon={
             <Pressable onPress={handleToggleShow} style={styles.showIcon}>
               <Ionicons
@@ -33,10 +79,13 @@ export default function Login() {
         />
       </View>
       <View>
-        <Pressable style={styles.loginButton}>
+        <Pressable style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginText}>Login</Text>
         </Pressable>
-        <Pressable style={styles.forgotButton}>
+        <Pressable
+          style={styles.forgotButton}
+          onPress={() => handleNavigate("forgot")}
+        >
           <Text style={styles.forgotText}>Fotgot password?</Text>
         </Pressable>
       </View>
@@ -47,8 +96,11 @@ export default function Login() {
         </View>
         <View style={styles.line} />
       </View>
-      <View style={{width: '80%', marginHorizontal: 'auto'}}>
-        <Pressable style={styles.createButton}>
+      <View style={{ width: "80%", marginHorizontal: "auto" }}>
+        <Pressable
+          style={styles.createButton}
+          onPress={() => handleNavigate("register")}
+        >
           <Text style={styles.createText}>Create new account</Text>
         </Pressable>
       </View>
@@ -57,10 +109,13 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 16, backgroundColor: "#fff", flex: 1 },
+  container: { padding: 16, backgroundColor: "#fff", flex: 1, paddingTop: 50 },
+  logo: { height: 60, width: 120 },
   titleContainer: {
     padding: 8,
     marginBottom: 12,
+    alignItems: "center",
+    alignContent: "center",
   },
   title: {
     color: "#1877f2",

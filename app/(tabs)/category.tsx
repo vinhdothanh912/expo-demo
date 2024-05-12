@@ -7,7 +7,7 @@ import { StyleSheet, View, Image, Pressable, Text } from "react-native";
 
 const PlaceholderImage = require("../../assets/images/background-image.png");
 
-export default function PhotoScreen() {
+export default function CategoryScreen() {
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
